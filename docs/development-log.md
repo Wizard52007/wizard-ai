@@ -60,3 +60,29 @@ Define the initial architecture and technical roadmap before implementing the AI
 
 ```text
 3 tests passed
+
+## Application Logging
+
+Implemented the initial centralized logging system for Wizard.
+
+### What was added
+
+- Created a centralized `get_logger()` function.
+- Added console logging for normal application output.
+- Added file logging to `logs/wizard.log`.
+- Console log level is controlled by `WIZARD_LOG_LEVEL`.
+- File logging captures DEBUG-level messages.
+- Added timestamp, log level, logger name, and message formatting.
+- Added protection against duplicate logger handlers.
+- Added automated tests for logger configuration and handlers.
+- Verified logging integration through `wizard.main`.
+
+### Security considerations
+
+- `.log` files are ignored by Git.
+- Sensitive information such as API keys, passwords, and tokens should never be written to logs.
+
+### Verification
+
+- `pytest` → **5 passed**
+- `python -m wizard.main` → successful
