@@ -9,6 +9,7 @@ __pycache__/
 # Environment variables / secrets
 .env
 .env.*
+!.env.example
 
 # Logs
 logs/
@@ -21,3 +22,6 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Python package metadata
+*.egg-info/
