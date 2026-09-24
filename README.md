@@ -58,3 +58,13 @@ See [`docs/decisions.md`](docs/decisions.md).
 ---
 
 Built as a personal AI engineering project.
+
+## Testing
+
+Wizard uses `pytest` for automated testing.
+
+Run the complete test suite with:
+
+```powershell
+pytest
+```

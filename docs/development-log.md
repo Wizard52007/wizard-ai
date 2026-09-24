@@ -60,6 +60,7 @@ Define the initial architecture and technical roadmap before implementing the AI
 
 ```text
 3 tests passed
+```
 
 ## Application Logging
 
@@ -77,7 +78,7 @@ Implemented the initial centralized logging system for Wizard.
 - Added automated tests for logger configuration and handlers.
 - Verified logging integration through `wizard.main`.
 
-### Security considerations
+### Security Considerations
 
 - `.log` files are ignored by Git.
 - Sensitive information such as API keys, passwords, and tokens should never be written to logs.
@@ -86,3 +87,19 @@ Implemented the initial centralized logging system for Wizard.
 
 - `pytest` → **5 passed**
 - `python -m wizard.main` → successful
+
+## Testing Foundation
+
+### Completed
+
+- Configured pytest through `pyproject.toml`.
+- Established `tests/` as the project's test directory.
+- Added automated tests for configuration and logging.
+- Documented how to execute the test suite.
+- Verified the complete test suite successfully.
+
+### Verification
+
+```text
+5 tests passed
+```
