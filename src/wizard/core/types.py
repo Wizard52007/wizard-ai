@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
+from uuid import UUID, uuid4
 
 
 class MessageRole(str, Enum):
@@ -31,5 +32,24 @@ class Message:
         return cls(
             role=role,
             content=content,
+            timestamp=datetime.now(timezone.utc),
+        )
+
+
+@dataclass
+class Request:
+    """Represents a unit of work submitted to Wizard."""
+
+    message: Message
+    request_id: UUID
+    timestamp: datetime
+
+    @classmethod
+    def create(cls, message: Message) -> "Request":
+        """Create a request with a unique ID and current UTC timestamp."""
+
+        return cls(
+            message=message,
+            request_id=uuid4(),
             timestamp=datetime.now(timezone.utc),
         )

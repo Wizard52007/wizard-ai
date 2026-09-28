@@ -1,6 +1,6 @@
 from datetime import timezone
-
-from wizard.core.types import Message, MessageRole
+from uuid import UUID
+from wizard.core.types import Message, MessageRole, Request
 
 
 def test_message_creation():
@@ -27,3 +27,38 @@ def test_message_roles():
     assert MessageRole.USER.value == "user"
     assert MessageRole.ASSISTANT.value == "assistant"
     assert MessageRole.TOOL.value == "tool"
+
+
+def test_request_creation():
+    message = Message.create(
+        MessageRole.USER,
+        "Hello Wizard",
+    )
+
+    request = Request.create(message)
+
+    assert request.message == message
+    assert isinstance(request.request_id, UUID)
+
+
+def test_request_timestamp_is_utc():
+    message = Message.create(
+        MessageRole.USER,
+        "Hello Wizard",
+    )
+
+    request = Request.create(message)
+
+    assert request.timestamp.tzinfo == timezone.utc
+
+
+def test_requests_have_unique_ids():
+    message = Message.create(
+        MessageRole.USER,
+        "Hello Wizard",
+    )
+
+    request_one = Request.create(message)
+    request_two = Request.create(message)
+
+    assert request_one.request_id != request_two.request_id
