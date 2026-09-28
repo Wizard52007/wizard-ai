@@ -53,3 +53,25 @@ class Request:
             request_id=uuid4(),
             timestamp=datetime.now(timezone.utc),
         )
+
+@dataclass
+class Response:
+    """Represents Wizard's response to a request."""
+
+    request_id: UUID
+    content: str
+    timestamp: datetime
+
+    @classmethod
+    def create(
+        cls,
+        request_id: UUID,
+        content: str,
+    ) -> "Response":
+        """Create a response with the current UTC timestamp."""
+
+        return cls(
+            request_id=request_id,
+            content=content,
+            timestamp=datetime.now(timezone.utc),
+        )
