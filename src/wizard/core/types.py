@@ -75,3 +75,29 @@ class Response:
             content=content,
             timestamp=datetime.now(timezone.utc),
         )
+
+
+@dataclass
+class ToolRequest:
+    """Represents a request to execute a specific tool."""
+
+    request_id: UUID
+    tool_name: str
+    arguments: dict[str, object]
+    timestamp: datetime
+
+    @classmethod
+    def create(
+        cls,
+        request_id: UUID,
+        tool_name: str,
+        arguments: dict[str, object],
+    ) -> "ToolRequest":
+        """Create a tool request with the current UTC timestamp."""
+
+        return cls(
+            request_id=request_id,
+            tool_name=tool_name,
+            arguments=arguments,
+            timestamp=datetime.now(timezone.utc),
+        )

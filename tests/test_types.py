@@ -1,6 +1,6 @@
 from datetime import timezone
 from uuid import UUID
-from wizard.core.types import Message, MessageRole, Request, Response
+from wizard.core.types import Message, MessageRole, Request, Response, ToolRequest
 
 
 def test_message_creation():
@@ -111,3 +111,66 @@ def test_response_links_to_request():
     )
 
     assert response.request_id == request.request_id
+
+
+def test_tool_request_creation():
+    message = Message.create(
+        MessageRole.USER,
+        "Open Chrome",
+    )
+
+    request = Request.create(message)
+
+    arguments = {
+        "url": "https://google.com",
+    }
+
+    tool_request = ToolRequest.create(
+        request.request_id,
+        "open_browser",
+        arguments,
+    )
+
+    assert tool_request.request_id == request.request_id
+    assert tool_request.tool_name == "open_browser"
+    assert tool_request.arguments == arguments
+
+
+def test_tool_request_timestamp_is_utc():
+    message = Message.create(
+        MessageRole.USER,
+        "Open Chrome",
+    )
+
+    request = Request.create(message)
+
+    tool_request = ToolRequest.create(
+        request.request_id,
+        "open_browser",
+        {},
+    )
+
+    assert tool_request.timestamp.tzinfo == timezone.utc
+
+
+def test_tool_request_preserves_arguments():
+    message = Message.create(
+        MessageRole.USER,
+        "Search for VJTI",
+    )
+
+    request = Request.create(message)
+
+    arguments = {
+        "query": "VJTI Mumbai",
+        "new_tab": True,
+    }
+
+    tool_request = ToolRequest.create(
+        request.request_id,
+        "search_web",
+        arguments,
+    )
+
+    assert tool_request.arguments["query"] == "VJTI Mumbai"
+    assert tool_request.arguments["new_tab"] is True
