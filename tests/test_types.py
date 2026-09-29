@@ -1,6 +1,7 @@
 from datetime import timezone
 from uuid import UUID
 from wizard.core.types import (
+    ExecutionContext,
     Message,
     MessageRole,
     Request,
@@ -266,3 +267,59 @@ def test_tool_result_preserves_data():
     assert result.data["os"] == "Windows"
     assert result.data["version"] == 11
     assert result.data["online"] is True
+
+
+def test_execution_context_creation():
+    message = Message.create(
+        MessageRole.USER,
+        "Hello Wizard",
+    )
+
+    request = Request.create(message)
+
+    context = ExecutionContext.create(request)
+
+    assert context.request == request
+    assert context.messages == [message]
+    assert context.tool_results == []
+
+
+def test_execution_context_preserves_request():
+    message = Message.create(
+        MessageRole.USER,
+        "Open Chrome",
+    )
+
+    request = Request.create(message)
+
+    context = ExecutionContext.create(request)
+
+    assert context.request.request_id == request.request_id
+    assert context.request.message == message
+
+
+def test_execution_context_starts_with_request_message():
+    message = Message.create(
+        MessageRole.USER,
+        "Search for VJTI",
+    )
+
+    request = Request.create(message)
+
+    context = ExecutionContext.create(request)
+
+    assert len(context.messages) == 1
+    assert context.messages[0] == request.message
+
+
+def test_execution_context_starts_without_tool_results():
+    message = Message.create(
+        MessageRole.USER,
+        "Run a tool",
+    )
+
+    request = Request.create(message)
+
+    context = ExecutionContext.create(request)
+
+    assert context.tool_results == []

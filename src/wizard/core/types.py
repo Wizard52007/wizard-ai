@@ -131,3 +131,22 @@ class ToolResult:
             error=error,
             timestamp=datetime.now(timezone.utc),
         )
+
+
+@dataclass
+class ExecutionContext:
+    """Represents the working context for a Wizard execution."""
+
+    request: Request
+    messages: list[Message]
+    tool_results: list[ToolResult]
+
+    @classmethod
+    def create(cls, request: Request) -> "ExecutionContext":
+        """Create an execution context from a request."""
+
+        return cls(
+            request=request,
+            messages=[request.message],
+            tool_results=[],
+        )
