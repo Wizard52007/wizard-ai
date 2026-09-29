@@ -1,7 +1,13 @@
 from datetime import timezone
 from uuid import UUID
-from wizard.core.types import Message, MessageRole, Request, Response, ToolRequest
-
+from wizard.core.types import (
+    Message,
+    MessageRole,
+    Request,
+    Response,
+    ToolRequest,
+    ToolResult,
+)
 
 def test_message_creation():
     message = Message.create(
@@ -174,3 +180,89 @@ def test_tool_request_preserves_arguments():
 
     assert tool_request.arguments["query"] == "VJTI Mumbai"
     assert tool_request.arguments["new_tab"] is True
+
+
+def test_tool_result_success():
+    message = Message.create(
+        MessageRole.USER,
+        "Search for VJTI",
+    )
+
+    request = Request.create(message)
+
+    data = {
+        "results": ["VJTI Mumbai"],
+    }
+
+    result = ToolResult.create(
+        request.request_id,
+        success=True,
+        data=data,
+    )
+
+    assert result.request_id == request.request_id
+    assert result.success is True
+    assert result.data == data
+    assert result.error is None
+
+
+def test_tool_result_failure():
+    message = Message.create(
+        MessageRole.USER,
+        "Open Chrome",
+    )
+
+    request = Request.create(message)
+
+    result = ToolResult.create(
+        request.request_id,
+        success=False,
+        error="Chrome is not installed",
+    )
+
+    assert result.request_id == request.request_id
+    assert result.success is False
+    assert result.data is None
+    assert result.error == "Chrome is not installed"
+
+
+def test_tool_result_timestamp_is_utc():
+    message = Message.create(
+        MessageRole.USER,
+        "Run a tool",
+    )
+
+    request = Request.create(message)
+
+    result = ToolResult.create(
+        request.request_id,
+        success=True,
+        data="Done",
+    )
+
+    assert result.timestamp.tzinfo == timezone.utc
+
+
+def test_tool_result_preserves_data():
+    message = Message.create(
+        MessageRole.USER,
+        "Get system information",
+    )
+
+    request = Request.create(message)
+
+    data = {
+        "os": "Windows",
+        "version": 11,
+        "online": True,
+    }
+
+    result = ToolResult.create(
+        request.request_id,
+        success=True,
+        data=data,
+    )
+
+    assert result.data["os"] == "Windows"
+    assert result.data["version"] == 11
+    assert result.data["online"] is True

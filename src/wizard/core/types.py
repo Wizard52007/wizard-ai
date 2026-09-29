@@ -101,3 +101,33 @@ class ToolRequest:
             arguments=arguments,
             timestamp=datetime.now(timezone.utc),
         )
+
+
+
+@dataclass
+class ToolResult:
+    """Represents the result of a tool execution."""
+
+    request_id: UUID
+    success: bool
+    data: object | None
+    error: str | None
+    timestamp: datetime
+
+    @classmethod
+    def create(
+        cls,
+        request_id: UUID,
+        success: bool,
+        data: object | None = None,
+        error: str | None = None,
+    ) -> "ToolResult":
+        """Create a tool result with the current UTC timestamp."""
+
+        return cls(
+            request_id=request_id,
+            success=success,
+            data=data,
+            error=error,
+            timestamp=datetime.now(timezone.utc),
+        )
