@@ -1,3 +1,4 @@
+from wizard.brain.brain import Brain
 from wizard.core.types import (
     ExecutionContext,
     Request,
@@ -8,12 +9,14 @@ from wizard.core.types import (
 class Orchestrator:
     """Coordinates the execution of Wizard requests."""
 
+    def __init__(self, brain: Brain):
+        """Initialize the orchestrator with a Brain."""
+
+        self.brain = brain
+
     def handle(self, request: Request) -> Response:
-        """Process a request and return a response."""
+        """Process a request using the Brain."""
 
         context = ExecutionContext.create(request)
 
-        return Response.create(
-            request_id=context.request.request_id,
-            content=context.request.message.content,
-        )
+        return self.brain.respond(context)

@@ -122,6 +122,28 @@ Instead, it requests controlled tools through the tool system.
 
 This separation allows the underlying AI model to be replaced without redesigning the rest of Wizard.
 
+### Brain and LLM Provider Abstraction
+
+The Brain is responsible for Wizard's reasoning layer. It receives the current execution context and produces a response without being tied to a specific language model provider.
+
+The Brain communicates with an abstract `LLMProvider` interface rather than directly depending on a specific provider.
+
+This creates a clear separation between reasoning and model infrastructure:
+
+```text
+ExecutionContext
+       │
+       ▼
+     Brain
+       │
+       ▼
+  LLMProvider
+       │
+       ├── OpenAI
+       ├── Gemini
+       ├── Anthropic
+       └── Local LLM
+
 ---
 
 ### 3. Context Manager
@@ -551,4 +573,3 @@ Wizard will follow these principles:
 
 8. **Incremental development**  
    Future capabilities should be introduced and validated one subsystem at a time.
-  
