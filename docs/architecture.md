@@ -144,6 +144,18 @@ ExecutionContext
        ├── Anthropic
        └── Local LLM
 
+### OpenAI Provider
+
+Wizard's first concrete LLM provider is the `OpenAIProvider`.
+
+The provider implements the `LLMProvider` interface and communicates with OpenAI through the Responses API. It is responsible for translating Wizard's internal `Message` objects into the format expected by the API and converting the model's response back into a Wizard `Message`.
+
+The provider obtains its API key and model configuration from the application's environment-based settings:
+
+```text
+WIZARD_LLM_API_KEY
+WIZARD_LLM_MODEL
+
 ---
 
 ### 3. Context Manager

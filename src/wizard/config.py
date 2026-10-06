@@ -24,5 +24,9 @@ class Settings:
             "WIZARD_LLM_API_KEY",
         )
 
+        self.llm_model = os.getenv(
+            "WIZARD_LLM_MODEL",
+        )
+
 
 settings = Settings()

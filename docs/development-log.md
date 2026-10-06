@@ -103,3 +103,33 @@ Implemented the initial centralized logging system for Wizard.
 ```text
 5 tests passed
 ```
+## OpenAI LLM Provider
+
+Implemented the first concrete LLM provider for Wizard using the OpenAI Responses API.
+
+### Implementation
+
+- Added the OpenAI Python SDK as a project dependency.
+- Added environment-based configuration for the OpenAI API key and model.
+- Implemented `OpenAIProvider` as a concrete `LLMProvider`.
+- Added conversion between Wizard `Message` objects and OpenAI request messages.
+- Added conversion of OpenAI responses back into Wizard `Message` objects.
+- Added error handling for OpenAI API failures.
+- Added dependency injection support for the OpenAI client.
+
+### Testing
+
+Added mocked unit tests covering:
+
+- Provider response generation.
+- Correct request formatting.
+- Model selection.
+- API error handling.
+- Configuration-based initialization.
+
+All tests pass without making real API calls.
+
+Current test result:
+
+```text
+37 passed
