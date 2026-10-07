@@ -1,4 +1,6 @@
 from wizard.brain.brain import Brain
+from wizard.brain.llm_brain import LLMBrain
+from wizard.brain.provider import LLMProvider
 from wizard.core.orchestrator import Orchestrator
 from wizard.core.types import (
     ExecutionContext,
@@ -80,3 +82,30 @@ def test_orchestrator_passes_request_to_brain():
     assert response.content == "Tracked"
     assert brain.received_context is not None
     assert brain.received_context.request == request
+
+
+def test_orchestrator_works_with_llm_brain():
+    class TestProvider(LLMProvider):
+        def generate(
+            self,
+            messages: list[Message],
+        ) -> Message:
+            return Message.create(
+                MessageRole.ASSISTANT,
+                "Hello from Wizard",
+            )
+
+    brain = LLMBrain(TestProvider())
+    orchestrator = Orchestrator(brain)
+
+    message = Message.create(
+        MessageRole.USER,
+        "Hello Wizard",
+    )
+
+    request = Request.create(message)
+
+    response = orchestrator.handle(request)
+
+    assert response.request_id == request.request_id
+    assert response.content == "Hello from Wizard"

@@ -585,3 +585,30 @@ Wizard will follow these principles:
 
 8. **Incremental development**  
    Future capabilities should be introduced and validated one subsystem at a time.
+
+### CLI Conversation Flow
+
+Wizard currently provides a command-line interface for interacting with the agent.
+
+The CLI is responsible for collecting user input and displaying responses, while the actual processing remains inside the existing Wizard architecture.
+
+```text
+User Input
+    ↓
+Message
+    ↓
+Request
+    ↓
+Orchestrator
+    ↓
+LLMBrain
+    ↓
+LLMProvider
+    ↓
+OpenAIProvider
+    ↓
+OpenAI Responses API
+    ↓
+Response
+    ↓
+CLI Output

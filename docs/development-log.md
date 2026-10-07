@@ -133,3 +133,34 @@ Current test result:
 
 ```text
 37 passed
+
+## Wizard CLI Conversation Loop
+
+Implemented the first command-line conversation interface for Wizard.
+
+### Implementation
+
+- Added a CLI entry point through `wizard.main`.
+- Connected `OpenAIProvider` to `LLMBrain`.
+- Connected `LLMBrain` to the `Orchestrator`.
+- Added an interactive input loop for user messages.
+- Added `exit` and `quit` commands for graceful shutdown.
+- Added handling for empty input.
+- Added basic runtime error handling.
+- Converted CLI input into Wizard `Message` and `Request` objects.
+- Displayed generated Wizard responses in the terminal.
+
+### Validation
+
+The complete internal pipeline was tested using a fake LLM provider:
+
+```text
+Request
+    ↓
+Orchestrator
+    ↓
+LLMBrain
+    ↓
+TestProvider
+    ↓
+Response
