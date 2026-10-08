@@ -164,3 +164,38 @@ LLMBrain
 TestProvider
     ↓
 Response
+
+## Conversation History
+
+Implemented short-term conversation history for Wizard.
+
+### Implementation
+
+- Added the `ConversationHistory` component.
+- Added support for storing Wizard `Message` objects chronologically.
+- Added safe access to conversation messages.
+- Added support for clearing conversation history.
+- Integrated conversation history with the `Orchestrator`.
+- Added previous conversation messages to each `ExecutionContext`.
+- Added assistant responses back into the conversation history.
+- Kept conversation history separate from long-term memory.
+
+### Testing
+
+Added unit tests covering:
+
+- Empty history.
+- Adding messages.
+- Message ordering.
+- Protection of internal history state.
+- Clearing history.
+
+Added integration tests covering:
+
+- Orchestrator history updates.
+- Multi-turn conversations.
+
+Current test result:
+
+```text
+47 passed

@@ -158,6 +158,39 @@ WIZARD_LLM_MODEL
 
 ---
 
+### Conversation History
+
+Wizard maintains short-term conversation context through the `ConversationHistory` component.
+
+The component stores `Message` objects in chronological order and is owned by the `Orchestrator` for the lifetime of a conversation session.
+
+For each request, the Orchestrator:
+
+1. Adds the user's message to the conversation history.
+2. Builds an `ExecutionContext` containing the current conversation messages.
+3. Passes the context to the `Brain`.
+4. Receives the generated `Response`.
+5. Adds the assistant's response to the conversation history.
+
+The resulting flow is:
+
+```text
+User Message
+     ↓
+ConversationHistory
+     ↓
+Orchestrator
+     ↓
+ExecutionContext
+     ↓
+LLMBrain
+     ↓
+LLMProvider
+     ↓
+Response
+     ↓
+ConversationHistory
+
 ### 3. Context Manager
 
 The context manager provides relevant information to the orchestrator and brain.
