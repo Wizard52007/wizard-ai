@@ -199,3 +199,38 @@ Current test result:
 
 ```text
 47 passed
+
+## Wizard Identity and System Instructions
+
+Implemented system instructions to establish Wizard's identity and
+default behavior.
+
+### Implementation
+
+- Added `brain/instructions.py`.
+- Defined Wizard's identity as a personal AI assistant.
+- Added instructions for communication style and intended purpose.
+- Defined guidelines for honesty about available capabilities.
+- Integrated system instructions into `LLMBrain`.
+- Ensured system instructions are sent before conversation messages.
+- Preserved the existing LLM provider interface.
+- Kept system instructions separate from conversation history.
+
+### Testing
+
+Added tests covering:
+
+- Wizard's identity.
+- Wizard's intended purpose.
+- Honesty about available capabilities.
+- Prevention of false capability claims.
+- Consistent self-identification.
+
+Updated Brain tests to verify that system instructions are passed
+to the provider and that the original conversation context remains
+unchanged.
+
+Current test result:
+
+```text
+52 passed

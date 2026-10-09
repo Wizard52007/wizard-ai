@@ -158,6 +158,53 @@ WIZARD_LLM_MODEL
 
 ---
 
+### Wizard Identity and System Instructions
+
+Wizard's identity and default behavioral instructions are defined in
+`src/wizard/brain/instructions.py`.
+
+The module exposes `WIZARD_SYSTEM_INSTRUCTIONS`, which defines:
+
+- Wizard's identity as a personal AI assistant.
+- Its intended purpose and areas of assistance.
+- Communication guidelines.
+- Honesty about currently available capabilities.
+- Consistent self-identification as Wizard.
+
+The `LLMBrain` includes these instructions when preparing messages
+for the LLM provider.
+
+The system message is prepended to the conversation messages for
+each request. The original conversation history is not modified,
+and the system instructions are not stored in `ConversationHistory`.
+
+The request flow is:
+
+```text
+User Message
+     |
+     v
+Orchestrator
+     |
+     v
+ExecutionContext
+     |
+     v
+LLMBrain
+     |
+     +----> Wizard System Instructions
+     |
+     +----> Conversation History
+                 |
+                 v
+             LLMProvider
+                 |
+                 v
+              LLM API
+                 |
+                 v
+          Wizard's Response
+
 ### Conversation History
 
 Wizard maintains short-term conversation context through the `ConversationHistory` component.

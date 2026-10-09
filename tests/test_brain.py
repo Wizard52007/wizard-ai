@@ -73,7 +73,9 @@ def test_llm_brain_generates_response():
     assert response.content == "Hello from Wizard"
 
 
-def test_llm_brain_passes_context_messages_to_provider():
+def test_llm_brain_passes_system_instructions_and_context_messages():
+    from wizard.brain.instructions import WIZARD_SYSTEM_INSTRUCTIONS
+
     received_messages = []
 
     class TestProvider(LLMProvider):
@@ -100,4 +102,11 @@ def test_llm_brain_passes_context_messages_to_provider():
 
     brain.respond(context)
 
-    assert received_messages == context.messages
+    assert len(received_messages) == len(context.messages) + 1
+
+    assert received_messages[0].role == MessageRole.SYSTEM
+    assert received_messages[0].content == WIZARD_SYSTEM_INSTRUCTIONS
+
+    assert received_messages[1:] == context.messages
+
+    assert context.messages == [message]

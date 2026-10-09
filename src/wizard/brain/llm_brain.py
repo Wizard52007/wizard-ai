@@ -1,6 +1,12 @@
 from wizard.brain.brain import Brain
+from wizard.brain.instructions import WIZARD_SYSTEM_INSTRUCTIONS
 from wizard.brain.provider import LLMProvider
-from wizard.core.types import ExecutionContext, Response
+from wizard.core.types import (
+    ExecutionContext,
+    Message,
+    MessageRole,
+    Response,
+)
 
 
 class LLMBrain(Brain):
@@ -17,7 +23,17 @@ class LLMBrain(Brain):
     ) -> Response:
         """Generate a Wizard response using the configured provider."""
 
-        message = self.provider.generate(context.messages)
+        system_message = Message.create(
+            role=MessageRole.SYSTEM,
+            content=WIZARD_SYSTEM_INSTRUCTIONS,
+        )
+
+        messages = [
+            system_message,
+            *context.messages,
+        ]
+
+        message = self.provider.generate(messages)
 
         return Response.create(
             request_id=context.request.request_id,
